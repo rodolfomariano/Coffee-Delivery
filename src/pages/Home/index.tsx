@@ -3,6 +3,7 @@ import {
   BannerContent,
   BenefitsContainer,
   BenefitsContent,
+  CardList,
   Container,
   Content,
 } from './styles'
@@ -10,7 +11,11 @@ import {
 import CoffeeBanner from '../../assets/coffee-banner.svg'
 import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 
+import { coffeeList } from '../../utils/coffeeList'
+import { CoffeeCard } from '../../components/CoffeeCard'
+
 export function Home() {
+  console.log(coffeeList)
   return (
     <Container>
       <Banner>
@@ -58,6 +63,22 @@ export function Home() {
 
       <Content>
         <h2>Nossos cafés</h2>
+
+        <CardList>
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+        </CardList>
+
+        {coffeeList.map((img) => {
+          // const { CoffeeImage } = img
+          return (
+            <img key={img.title} src={img.coffeeImage} alt="" />
+            // <p key={img.title}>{img.title}</p>
+          )
+        })}
       </Content>
     </Container>
   )

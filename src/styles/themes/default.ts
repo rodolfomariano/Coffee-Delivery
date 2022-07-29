@@ -1,6 +1,7 @@
 export const defaultTheme = {
   white: '#FFFFFF',
   background: '#FAFAFA',
+  primary: '#4B2995',
 
   'primary-dark': '#4B2995',
   'primary-medium': '#804Ff8',
@@ -28,6 +29,7 @@ export const defaultTheme = {
 export const darkTheme = {
   white: '#FFFFFF',
   background: '#111827',
+  primary: '#4B2995',
 
   'primary-dark': '#EBE5F9',
   'primary-medium': '#804Ff8',
