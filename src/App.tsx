@@ -2,13 +2,21 @@ import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
 import { GlobalStyles } from './styles/global'
-import { defaultTheme } from './styles/themes/default'
+import { darkTheme, defaultTheme } from './styles/themes/default'
 
 import { Router } from './Router'
 
+import { useTheme } from './hooks/useTheme'
+
 function App() {
+  const { theme } = useTheme()
+
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider
+      theme={
+        theme === undefined || theme === 'light' ? defaultTheme : darkTheme
+      }
+    >
       <BrowserRouter>
         <Router />
       </BrowserRouter>
