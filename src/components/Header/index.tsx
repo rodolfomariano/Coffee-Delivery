@@ -1,9 +1,11 @@
+import { MapPin, Moon, ShoppingCart, SunDim } from 'phosphor-react'
+import { NavLink } from 'react-router-dom'
+
 import { CarContainer, Container, ThemeContainer } from './styles'
 
 import HeaderLogo from '../../assets/logo.svg'
 import HeaderLogoLight from '../../assets/logo-light.svg'
 
-import { MapPin, Moon, ShoppingCart, SunDim } from 'phosphor-react'
 import { useTheme } from '../../hooks/useTheme'
 
 export function Header() {
@@ -47,9 +49,9 @@ export function Header() {
           />
           Porto Alegre, RS
         </button>
-        <a href="#">
+        <NavLink to="/checkout">
           <ShoppingCart weight="fill" color="#C47F17" size={22} />
-        </a>
+        </NavLink>
       </CarContainer>
     </Container>
   )

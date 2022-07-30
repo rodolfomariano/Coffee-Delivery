@@ -3,9 +3,11 @@ import styled from 'styled-components'
 interface InputContainerProps {
   isOptional: boolean
   inputSize: 'full' | number
+  isFlexNone: boolean
 }
 
 export const InputContainer = styled.div<InputContainerProps>`
+  flex: ${({ isFlexNone }) => isFlexNone === true && `none`};
   position: relative;
   width: ${({ inputSize }) =>
     inputSize === 'full' ? '100%' : `${inputSize}px`};
