@@ -19,6 +19,11 @@ export const GlobalStyles = createGlobalStyle`
     }
   }
 
+  :focus {
+    outline: 0;
+    box-shadow: 0 0 0 1px ${({ theme }) => theme['secondary-dark']};
+  }
+
   body {
     background: ${({ theme }) => theme.background};
     color: ${({ theme }) => theme['base-text']};

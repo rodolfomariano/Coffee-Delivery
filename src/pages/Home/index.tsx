@@ -15,7 +15,6 @@ import { coffeeList } from '../../utils/coffeeList'
 import { CoffeeCard } from '../../components/CoffeeCard'
 
 export function Home() {
-  console.log(coffeeList)
   return (
     <Container>
       <Banner>
@@ -65,20 +64,19 @@ export function Home() {
         <h2>Nossos cafés</h2>
 
         <CardList>
-          <CoffeeCard />
-          <CoffeeCard />
-          <CoffeeCard />
-          <CoffeeCard />
-          <CoffeeCard />
+          {coffeeList.map((coffeff) => {
+            return (
+              <CoffeeCard
+                key={coffeff.id}
+                title={coffeff.title}
+                description={coffeff.description}
+                image={coffeff.coffeeImage}
+                price={coffeff.price}
+                type={coffeff.type}
+              />
+            )
+          })}
         </CardList>
-
-        {coffeeList.map((img) => {
-          // const { CoffeeImage } = img
-          return (
-            <img key={img.title} src={img.coffeeImage} alt="" />
-            // <p key={img.title}>{img.title}</p>
-          )
-        })}
       </Content>
     </Container>
   )

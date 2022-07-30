@@ -1,3 +1,6 @@
+import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
+import { useState } from 'react'
+
 import {
   ActionContainer,
   AddCoffee,
@@ -5,44 +8,96 @@ import {
   CoffeeTitle,
   CoffeeTypeContainer,
   Container,
-  InputContent,
+  AmountContent,
   RemoveCoffee,
   ShoppingCartButton,
 } from './styles'
 
-import Express from '../../assets/coffees/express.svg'
-import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
+interface CoffeeCardProps {
+  image: string
+  title: string
+  type: string[]
+  description: string
+  price: number
+}
 
-export function CoffeeCard() {
+// interface Coffee {
+//   image: string
+//   title: string
+//   type: string[]
+//   description: string
+//   price: number
+// }
+
+export function CoffeeCard({
+  title,
+  type,
+  description,
+  price,
+  image,
+}: CoffeeCardProps) {
+  const [amountOfCoffee, setAmountOfCoffee] = useState(0)
+  // const [toAddInTheShoppingCart, setToAddInTheShoppingCart] = useState<
+  //   Coffee[]
+  // >([])
+
+  // console.log(toAddInTheShoppingCart)
+
+  function handleAddCoffee() {
+    setAmountOfCoffee(amountOfCoffee + 1)
+    // setToAddInTheShoppingCart((state) => [
+    //   ...state,
+    //   {
+    //     title,
+    //     type,
+    //     description,
+    //     price,
+    //     image,
+    //   },
+    // ])
+  }
+
+  function handleRemoveCoffee() {
+    setAmountOfCoffee(amountOfCoffee - 1)
+  }
+
   return (
     <Container>
-      <img src={Express} alt="" />
+      <img src={image} alt="" />
 
       <CoffeeTypeContainer>
-        <span>Expresso</span>
+        {type.map((type) => (
+          <span key={type}>{type}</span>
+        ))}
       </CoffeeTypeContainer>
 
-      <CoffeeTitle>Expresso Tradicional</CoffeeTitle>
+      <CoffeeTitle>{title}</CoffeeTitle>
 
-      <CoffeeDescription>
-        O tradicional café feito com água quente e grãos moídos
-      </CoffeeDescription>
+      <CoffeeDescription>{description}</CoffeeDescription>
 
       <ActionContainer>
         <span>
-          R$ <strong>9,90</strong>
+          R${' '}
+          <strong>
+            {price.toLocaleString('pt-BR', {
+              minimumFractionDigits: 2,
+            })}
+          </strong>
         </span>
 
         <div>
-          <InputContent>
-            <RemoveCoffee>
+          <AmountContent>
+            <RemoveCoffee
+              onClick={handleRemoveCoffee}
+              disabled={amountOfCoffee === 0}
+            >
               <Minus />
             </RemoveCoffee>
-            <input type="" value={10} />
-            <AddCoffee>
+            <span>{amountOfCoffee}</span>
+            <AddCoffee onClick={handleAddCoffee}>
               <Plus />
             </AddCoffee>
-          </InputContent>
+          </AmountContent>
 
           <ShoppingCartButton>
             <ShoppingCartSimple size={22} weight="fill" />

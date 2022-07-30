@@ -22,6 +22,7 @@ export const CoffeeTypeContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 4px;
 
   span {
     display: inline-block;
@@ -72,7 +73,7 @@ export const ActionContainer = styled.div`
   }
 `
 
-export const InputContent = styled.div`
+export const AmountContent = styled.div`
   display: flex;
   border-radius: 6px;
 
@@ -82,13 +83,21 @@ export const InputContent = styled.div`
     color: ${({ theme }) => theme['primary-medium']};
     transition: 300ms;
 
+    &:disabled:hover {
+      background-color: ${({ theme }) => theme['base-input']};
+      cursor: not-allowed;
+    }
+
     &:hover {
       background-color: ${({ theme }) => theme['base-hover']};
       color: ${({ theme }) => theme['primary-dark']};
     }
   }
 
-  input {
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 24px;
     background-color: ${({ theme }) => theme['base-input']};
     color: ${({ theme }) => theme['base-text']};
