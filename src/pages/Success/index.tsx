@@ -1,4 +1,4 @@
-import { CaretLeft, MapPin } from 'phosphor-react'
+import { CaretLeft, CurrencyDollar, MapPin, Timer } from 'phosphor-react'
 import {
   Container,
   Details,
@@ -40,7 +40,7 @@ export function Success() {
 
           <DetailsContainer>
             <IconWrapped>
-              <MapPin />
+              <Timer />
             </IconWrapped>
 
             <Details>
@@ -54,7 +54,7 @@ export function Success() {
 
           <DetailsContainer>
             <IconWrapped>
-              <MapPin />
+              <CurrencyDollar />
             </IconWrapped>
 
             <Details>
