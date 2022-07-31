@@ -173,11 +173,11 @@ export const CoffeeToBuyContent = styled.div`
   width: 100%;
   max-width: 448px;
   background-color: ${({ theme }) => theme['base-card']};
-  padding: 40px;
-  border-radius: 6px;
+  padding: 50px 40px;
+  border-radius: 6px 36px;
 
   @media (max-width: 720px) {
-    padding: 16px;
+    padding: 32px 16px;
   }
 `
 
