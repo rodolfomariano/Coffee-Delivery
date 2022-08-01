@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 import {
   Bank,
@@ -8,10 +10,13 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
-import { useState } from 'react'
+
 import { CoffeeSimpleCard } from '../../components/CoffeeSimpleCard'
 import { SimpleInput } from '../../components/SimpleInput'
+
 import { formatCEP } from '../../utils/maskToCEP'
+import { cepAPI } from '../../utils/api'
+
 import {
   Content,
   CoffeeToBuyContainer,
@@ -25,38 +30,80 @@ import {
   PurchaseData,
 } from './styles'
 
+interface CepResponse {
+  data: {
+    bairro: string
+    localidade: string
+    logradouro: string
+    uf: string
+  }
+}
+
 export function Checkout() {
-  const [cpf, setCpf] = useState('')
+  const [cep, setCep] = useState('')
+  const [street, setStreet] = useState('')
+  const [houseNumber, setHouseNumber] = useState('')
+  const [complement, setComplement] = useState('')
+  const [district, setDistrict] = useState('')
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
 
-  const cpfFormatted = formatCEP(cpf)
+  const [loading, setLoading] = useState(false)
+  const [getAddressError, setGetAddressError] = useState('')
 
-  function epa() {
-    console.log('epa')
+  const CepFormatted = formatCEP(cep)
+  const removeTheFormate = cep.replace('-', '')
 
-    if (cpf.length === 9) {
-      console.log('busa dados')
-    }
+  function resetForm() {
+    setStreet('')
+    setDistrict('')
+    setCity('')
+    setState('')
   }
 
-  document.addEventListener('keyup', function (event) {
-    if (event.keyCode === 9) {
-      epa()
+  async function getAddress() {
+    setLoading(true)
+
+    if (cep.length === 0) {
+      setLoading(false)
+      resetForm()
+      return setGetAddressError('Incira um CEP')
     }
-  })
 
-  // function openWindow() {
-  //   console.log('ixi')
-  // }
+    if (cep.length < 9 && cep.length !== 0) {
+      setLoading(false)
+      resetForm()
+      return setGetAddressError('CEP incompléto')
+    }
 
-  // function checkPageFocus() {
-  //   const info = document.getElementsByName('cpf')
+    if (cep.length === 9) {
+      resetForm()
 
-  //   if (document.hasFocus()) {
-  //     info.innerHTML = 'O documento tem o foco.'
-  //   } else {
-  //     info.innerHTML = 'O documento não tem o foco.'
-  //   }
-  // }
+      try {
+        await cepAPI
+          .get(`viacep.com.br/ws/${removeTheFormate}/json/`)
+          .then((response: CepResponse) => {
+            if (!response.data.bairro) {
+              setLoading(false)
+              return setGetAddressError('Endereço não encontrado')
+            }
+            if (response.data.bairro) {
+              setGetAddressError('')
+              setLoading(false)
+
+              setStreet(response.data.logradouro)
+              setDistrict(response.data.bairro)
+              setCity(response.data.localidade)
+              setState(response.data.uf)
+            }
+          })
+      } catch (error) {
+        setLoading(false)
+        console.log('error')
+        return setGetAddressError('Erro na busca do endereço')
+      }
+    }
+  }
 
   return (
     <Container>
@@ -79,27 +126,64 @@ export function Checkout() {
             </header>
 
             <InputContainer>
-              <SimpleInput
-                name={cpf}
-                type="text"
-                placeholder="CEP"
-                inputSize={200}
-                onChange={(e) => setCpf(e.target.value)}
-                value={cpfFormatted}
-                maxLength={9}
-              />
+              <div>
+                <SimpleInput
+                  type="text"
+                  placeholder="CEP"
+                  inputSize={200}
+                  value={CepFormatted}
+                  maxLength={9}
+                  autoFocus
+                  required
+                  onBlur={getAddress}
+                  onChange={(e) => setCep(e.target.value)}
+                />
+                {loading && (
+                  <span>
+                    <ClipLoader color="#4B2995" loading={loading} size={20} />{' '}
+                    <span>Buscando dados...</span>
+                  </span>
+                )}
+                {!loading && getAddressError !== '' && (
+                  <span>{getAddressError}</span>
+                )}
+              </div>
 
-              <SimpleInput placeholder="Rua" />
+              <SimpleInput placeholder="Rua" disabled value={street} />
 
               <div>
-                <SimpleInput placeholder="Número" inputSize={200} isFlexNone />
-                <SimpleInput placeholder="Complemento" isOptional />
+                <SimpleInput
+                  placeholder="Número"
+                  inputSize={200}
+                  isFlexNone
+                  onChange={(e) => setHouseNumber(e.target.value)}
+                  value={houseNumber}
+                  required
+                />
+                <SimpleInput
+                  placeholder="Complemento"
+                  isOptional
+                  onChange={(e) => setComplement(e.target.value)}
+                  value={complement}
+                />
               </div>
 
               <div>
-                <SimpleInput placeholder="Bairro" inputSize={200} isFlexNone />
-                <SimpleInput placeholder="Cidade" />
-                <SimpleInput placeholder="UF" inputSize={60} isFlexNone />
+                <SimpleInput
+                  placeholder="Bairro"
+                  inputSize={200}
+                  isFlexNone
+                  disabled
+                  value={district}
+                />
+                <SimpleInput placeholder="Cidade" disabled value={city} />
+                <SimpleInput
+                  placeholder="UF"
+                  inputSize={60}
+                  isFlexNone
+                  disabled
+                  value={state}
+                />
               </div>
             </InputContainer>
           </form>

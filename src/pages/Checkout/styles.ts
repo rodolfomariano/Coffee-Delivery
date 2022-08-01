@@ -83,6 +83,15 @@ export const InputContainer = styled.div`
   div {
     display: flex;
     gap: 12px;
+    align-items: center;
+
+    & > span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      color: ${({ theme }) => theme.primary};
+    }
   }
 `
 

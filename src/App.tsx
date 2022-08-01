@@ -1,5 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
+// import { ToastContainer } from 'react-toastify'
+// import 'react-toastify/dist/ReactToastify.css'
 
 import { GlobalStyles } from './styles/global'
 import { darkTheme, defaultTheme } from './styles/themes/default'
@@ -21,6 +23,7 @@ function App() {
         <Router />
       </BrowserRouter>
 
+      {/* <ToastContainer /> */}
       <GlobalStyles />
     </ThemeProvider>
   )
