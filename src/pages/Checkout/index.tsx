@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import ClipLoader from 'react-spinners/ClipLoader'
 
@@ -29,6 +29,8 @@ import {
   PersonalDataContainer,
   PurchaseData,
 } from './styles'
+import { useShoppingCart } from '../../hooks/useShoppingCart'
+import { coinFormat } from '../../utils/coinFormat'
 
 interface CepResponse {
   data: {
@@ -53,6 +55,8 @@ export function Checkout() {
 
   const CepFormatted = formatCEP(cep)
   const removeTheFormate = cep.replace('-', '')
+
+  const { shoppingCart, subTotalCalc, subTotal } = useShoppingCart()
 
   function resetForm() {
     setStreet('')
@@ -104,6 +108,10 @@ export function Checkout() {
       }
     }
   }
+
+  useEffect(() => {
+    subTotalCalc()
+  }, [subTotalCalc])
 
   return (
     <Container>
@@ -223,13 +231,25 @@ export function Checkout() {
           <h3>Cafés selecionados</h3>
 
           <CoffeeToBuyContent>
-            <CoffeeSimpleCard />
-            <CoffeeSimpleCard />
+            {shoppingCart
+              .map((coffee) => {
+                return (
+                  <CoffeeSimpleCard
+                    key={coffee.id}
+                    id={coffee.id}
+                    title={coffee.title}
+                    image={coffee.image}
+                    amount={coffee.amount}
+                    price={coffee.price}
+                  />
+                )
+              })
+              .sort((item1, item2) => Number(item1.key) - Number(item2.key))}
 
             <PurchaseData>
               <div>
                 <span>Total de itens</span>
-                <span>R$ 29,70</span>
+                <span>{coinFormat(subTotal)}</span>
               </div>
 
               <div>

@@ -64,15 +64,16 @@ export function Home() {
         <h2>Nossos cafés</h2>
 
         <CardList>
-          {coffeeList.map((coffeff) => {
+          {coffeeList.map((coffee) => {
             return (
               <CoffeeCard
-                key={coffeff.id}
-                title={coffeff.title}
-                description={coffeff.description}
-                image={coffeff.coffeeImage}
-                price={coffeff.price}
-                type={coffeff.type}
+                key={coffee.id}
+                id={coffee.id}
+                title={coffee.title}
+                description={coffee.description}
+                image={coffee.coffeeImage}
+                price={coffee.price}
+                type={coffee.type}
               />
             )
           })}

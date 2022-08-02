@@ -1,5 +1,6 @@
 import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
 import { useState } from 'react'
+import { useShoppingCart } from '../../hooks/useShoppingCart'
 
 import {
   ActionContainer,
@@ -14,6 +15,7 @@ import {
 } from './styles'
 
 interface CoffeeCardProps {
+  id: string
   image: string
   title: string
   type: string[]
@@ -21,44 +23,38 @@ interface CoffeeCardProps {
   price: number
 }
 
-// interface Coffee {
-//   image: string
-//   title: string
-//   type: string[]
-//   description: string
-//   price: number
-// }
+interface Coffee {
+  id: string
+  image: string
+  title: string
+  price: number
+  amount: number
+}
 
 export function CoffeeCard({
+  id,
   title,
   type,
   description,
   price,
   image,
 }: CoffeeCardProps) {
-  const [amountOfCoffee, setAmountOfCoffee] = useState(0)
-  // const [toAddInTheShoppingCart, setToAddInTheShoppingCart] = useState<
-  //   Coffee[]
-  // >([])
+  const [amountOfCoffee, setAmountOfCoffee] = useState(1)
 
-  // console.log(toAddInTheShoppingCart)
+  const { addItemInShoppingCart } = useShoppingCart()
 
-  function handleAddCoffee() {
+  function handleAddAmountOfCoffee() {
     setAmountOfCoffee(amountOfCoffee + 1)
-    // setToAddInTheShoppingCart((state) => [
-    //   ...state,
-    //   {
-    //     title,
-    //     type,
-    //     description,
-    //     price,
-    //     image,
-    //   },
-    // ])
   }
 
-  function handleRemoveCoffee() {
+  function handleRemoveAmountOfCoffee() {
     setAmountOfCoffee(amountOfCoffee - 1)
+  }
+
+  function handleAddItemInShoppingCart(data: Coffee) {
+    addItemInShoppingCart(data)
+
+    setAmountOfCoffee(1)
   }
 
   return (
@@ -88,18 +84,28 @@ export function CoffeeCard({
         <div>
           <AmountContent>
             <RemoveCoffee
-              onClick={handleRemoveCoffee}
+              onClick={handleRemoveAmountOfCoffee}
               disabled={amountOfCoffee === 0}
             >
               <Minus />
             </RemoveCoffee>
             <span>{amountOfCoffee}</span>
-            <AddCoffee onClick={handleAddCoffee}>
+            <AddCoffee onClick={handleAddAmountOfCoffee}>
               <Plus />
             </AddCoffee>
           </AmountContent>
 
-          <ShoppingCartButton>
+          <ShoppingCartButton
+            onClick={() =>
+              handleAddItemInShoppingCart({
+                id,
+                title,
+                price,
+                image,
+                amount: amountOfCoffee,
+              })
+            }
+          >
             <ShoppingCartSimple size={22} weight="fill" />
           </ShoppingCartButton>
         </div>

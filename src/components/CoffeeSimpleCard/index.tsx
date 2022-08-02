@@ -1,6 +1,7 @@
 import { Minus, Plus, Trash } from 'phosphor-react'
-
-import Express from '../../assets/coffees/express.svg'
+import { useState } from 'react'
+import { useShoppingCart } from '../../hooks/useShoppingCart'
+import { coinFormat } from '../../utils/coinFormat'
 
 import {
   CoffeeSimpleCardContainer,
@@ -10,32 +11,94 @@ import {
   RemoveCoffee,
 } from './styles'
 
-export function CoffeeSimpleCard() {
+interface CoffeeSimpleCardProps {
+  id: string
+  title: string
+  image: string
+  amount: number
+  price: number
+}
+
+interface Coffee {
+  id: string
+  image: string
+  title: string
+  price: number
+  amount: number
+}
+
+export function CoffeeSimpleCard({
+  id,
+  title,
+  image,
+  amount,
+  price,
+}: CoffeeSimpleCardProps) {
+  const [amountOfCoffee, setAmountOfCoffee] = useState(amount)
+
+  const {
+    removeOneItemInShoppingCart,
+    addOneItemInShoppingCart,
+    removeItemFromShoppingCart,
+  } = useShoppingCart()
+
+  function handleRemoveOneItemInShoppingCart(data: Coffee) {
+    removeOneItemInShoppingCart(data)
+
+    setAmountOfCoffee(amount - 1)
+  }
+
+  function handleAddItemInShoppingCart(data: Coffee) {
+    addOneItemInShoppingCart(data)
+
+    setAmountOfCoffee(amount + 1)
+  }
+
   return (
     <CoffeeSimpleCardContainer>
-      <img src={Express} alt="" />
+      <img src={image} alt="" />
 
       <CoffeeSimpleCardContent>
-        <strong>Expresso Tradicional</strong>
+        <strong>{title}</strong>
 
         <div>
           <AmountContent>
-            <RemoveCoffee>
+            <RemoveCoffee
+              onClick={() =>
+                handleRemoveOneItemInShoppingCart({
+                  id,
+                  title,
+                  price,
+                  image,
+                  amount: amountOfCoffee,
+                })
+              }
+            >
               <Minus />
             </RemoveCoffee>
-            <span>1</span>
-            <AddCoffee>
+            <span>{amountOfCoffee}</span>
+            <AddCoffee
+              onClick={() =>
+                handleAddItemInShoppingCart({
+                  id,
+                  title,
+                  price,
+                  image,
+                  amount: amountOfCoffee,
+                })
+              }
+            >
               <Plus />
             </AddCoffee>
           </AmountContent>
-          <button>
+          <button onClick={() => removeItemFromShoppingCart(title)}>
             <Trash size={16} />
             Remover
           </button>
         </div>
       </CoffeeSimpleCardContent>
 
-      <strong>R$ 9,90</strong>
+      <strong>{coinFormat(amount * price)}</strong>
     </CoffeeSimpleCardContainer>
   )
 }
