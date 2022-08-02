@@ -7,9 +7,12 @@ import HeaderLogo from '../../assets/logo.svg'
 import HeaderLogoLight from '../../assets/logo-light.svg'
 
 import { useTheme } from '../../hooks/useTheme'
+import { useShoppingCart } from '../../hooks/useShoppingCart'
 
 export function Header() {
   const { theme, alterTheme } = useTheme()
+
+  const { shoppingCart } = useShoppingCart()
 
   return (
     <Container>
@@ -51,6 +54,7 @@ export function Header() {
         </button>
         <NavLink to="/checkout">
           <ShoppingCart weight="fill" color="#C47F17" size={22} />
+          {shoppingCart.length > 0 && <span>{shoppingCart.length}</span>}
         </NavLink>
       </CarContainer>
     </Container>

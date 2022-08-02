@@ -254,12 +254,12 @@ export function Checkout() {
 
               <div>
                 <span>Entrega</span>
-                <span>R$ 3,70</span>
+                <span>R$ 3,50</span>
               </div>
 
               <div>
                 <strong>Total</strong>
-                <strong>R$ 33,20</strong>
+                <strong>{coinFormat(subTotal + 3.5)}</strong>
               </div>
             </PurchaseData>
 

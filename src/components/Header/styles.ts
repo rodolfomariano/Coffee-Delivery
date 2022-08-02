@@ -58,6 +58,7 @@ export const CarContainer = styled.div`
   }
 
   a {
+    position: relative;
     text-decoration: none;
     background-color: ${({ theme }) => theme['secondary-light']};
     padding: 8px;
@@ -70,6 +71,22 @@ export const CarContainer = styled.div`
 
     &:hover {
       filter: brightness(0.9);
+    }
+
+    span {
+      position: absolute;
+      top: -7px;
+      right: -7px;
+      width: 20px;
+      height: 20px;
+      background-color: ${({ theme }) => theme['secondary-dark']};
+      border-radius: 50%;
+      font-size: 0.75rem;
+      color: ${({ theme }) => theme.white};
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 `
