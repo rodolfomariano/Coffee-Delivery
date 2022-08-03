@@ -20,6 +20,7 @@ export const defaultTheme = {
   'base-button': '#E6E5E5',
   'base-input': '#EDEDED',
   'base-card': '#F3F2F2',
+  'base-dropContainer': '#d7d5d5dd',
 
   'gray-200': '#D7D5D5',
   'gray-600': '#475569',
@@ -48,6 +49,7 @@ export const darkTheme = {
   'base-button': '#4b5563',
   'base-input': '#374151',
   'base-card': '#1f2937',
+  'base-dropContainer': '#374151dd',
 
   'gray-200': '#D7D5D5',
   'gray-600': '#475569',

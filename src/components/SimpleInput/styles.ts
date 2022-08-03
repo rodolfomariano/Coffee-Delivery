@@ -35,6 +35,15 @@ export const Input = styled.input`
   font-size: 0.875rem;
   border-radius: 4px;
 
+  &[type='number']::-webkit-outer-spin-button,
+  &[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  &[type='number'] {
+    -moz-appearance: textfield;
+  }
+
   &::placeholder {
     font-size: 0.875rem;
   }

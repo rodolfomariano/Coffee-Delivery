@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useState } from 'react'
+import { coffeeList } from '../utils/coffeeList'
 
 interface Coffee {
   id: string
@@ -11,12 +12,17 @@ interface Coffee {
 interface ShoppingCartContextProps {
   shoppingCart: Coffee[]
   subTotal: number
+  cardIsInDragging: boolean
+  dropContainerIsHover: boolean
   setShoppingCart: (data: Coffee[]) => void
   addItemInShoppingCart: (data: Coffee) => void
   removeOneItemInShoppingCart: (data: Coffee) => void
   addOneItemInShoppingCart: (data: Coffee) => void
   removeItemFromShoppingCart: (title: string) => void
   subTotalCalc: () => void
+  getItemDroppedAndAddInCart: (id: string) => void
+  setCardIsInDragging: (status: boolean) => void
+  setDropContainerIsHover: (status: boolean) => void
 }
 
 interface ShoppingCartContextProviderProps {
@@ -30,6 +36,9 @@ export function ShoppingCartContextProvider({
 }: ShoppingCartContextProviderProps) {
   const [shoppingCart, setShoppingCart] = useState<Coffee[]>([])
   const [subTotal, setSubTotal] = useState(0)
+
+  const [cardIsInDragging, setCardIsInDragging] = useState(false)
+  const [dropContainerIsHover, setDropContainerIsHover] = useState(false)
 
   function addItemInShoppingCart(data: Coffee) {
     const item = shoppingCart.filter(
@@ -88,7 +97,6 @@ export function ShoppingCartContextProvider({
         },
       ])
     }
-    return console.log('epa')
   }
 
   function addOneItemInShoppingCart(data: Coffee) {
@@ -110,7 +118,6 @@ export function ShoppingCartContextProvider({
         },
       ])
     }
-    return console.log('epa')
   }
 
   function removeItemFromShoppingCart(title: string) {
@@ -130,17 +137,58 @@ export function ShoppingCartContextProvider({
     return calc
   }
 
+  function getItemDroppedAndAddInCart(id: string) {
+    const coffeeData = coffeeList.filter((item) => item.id === id)
+    const coffeeToAdd = coffeeData[0]
+
+    const item = shoppingCart.filter(
+      (item: Coffee) => item.title === coffeeToAdd.title,
+    )
+    const shoppingCartWithoutTheItem = shoppingCart.filter(
+      (item: Coffee) => item.title !== coffeeToAdd.title,
+    )
+
+    if (item[0]) {
+      return setShoppingCart([
+        ...shoppingCartWithoutTheItem,
+        {
+          id: coffeeToAdd.id,
+          title: coffeeToAdd.title,
+          image: coffeeToAdd.coffeeImage,
+          price: coffeeToAdd.price,
+          amount: item[0].amount + 1,
+        },
+      ])
+    }
+
+    return setShoppingCart([
+      ...shoppingCartWithoutTheItem,
+      {
+        id: coffeeToAdd.id,
+        title: coffeeToAdd.title,
+        image: coffeeToAdd.coffeeImage,
+        price: coffeeToAdd.price,
+        amount: coffeeToAdd.amountInTheCart + 1,
+      },
+    ])
+  }
+
   return (
     <ShoppingCartContext.Provider
       value={{
         shoppingCart,
         subTotal,
+        cardIsInDragging,
+        dropContainerIsHover,
         setShoppingCart,
         addItemInShoppingCart,
         removeOneItemInShoppingCart,
         addOneItemInShoppingCart,
         removeItemFromShoppingCart,
         subTotalCalc,
+        getItemDroppedAndAddInCart,
+        setCardIsInDragging,
+        setDropContainerIsHover,
       }}
     >
       {children}

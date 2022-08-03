@@ -1,5 +1,7 @@
 import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
 import { useState } from 'react'
+import { useDrag } from 'react-dnd'
+
 import { useShoppingCart } from '../../hooks/useShoppingCart'
 
 import {
@@ -41,7 +43,30 @@ export function CoffeeCard({
 }: CoffeeCardProps) {
   const [amountOfCoffee, setAmountOfCoffee] = useState(1)
 
-  const { addItemInShoppingCart } = useShoppingCart()
+  const {
+    addItemInShoppingCart,
+    setCardIsInDragging,
+    setDropContainerIsHover,
+  } = useShoppingCart()
+
+  const [, dragRef] = useDrag(
+    // @ts-ignore
+    () => ({
+      type: 'CARD',
+      item: { type: 'CARD', id },
+      collect: (monitor) => ({
+        opacity: monitor.isDragging(),
+      }),
+      end: () => {
+        setCardIsInDragging(false)
+        setDropContainerIsHover(false)
+      },
+      isDragging: () => {
+        setCardIsInDragging(true)
+      },
+    }),
+    [],
+  )
 
   function handleAddAmountOfCoffee() {
     setAmountOfCoffee(amountOfCoffee + 1)
@@ -58,7 +83,7 @@ export function CoffeeCard({
   }
 
   return (
-    <Container>
+    <Container ref={dragRef}>
       <img src={image} alt="" />
 
       <CoffeeTypeContainer>
@@ -85,7 +110,7 @@ export function CoffeeCard({
           <AmountContent>
             <RemoveCoffee
               onClick={handleRemoveAmountOfCoffee}
-              disabled={amountOfCoffee === 0}
+              disabled={amountOfCoffee === 1}
             >
               <Minus />
             </RemoveCoffee>

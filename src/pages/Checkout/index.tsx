@@ -163,6 +163,7 @@ export function Checkout() {
                 <SimpleInput
                   placeholder="Número"
                   inputSize={200}
+                  type="number"
                   isFlexNone
                   onChange={(e) => setHouseNumber(e.target.value)}
                   value={houseNumber}
@@ -230,41 +231,45 @@ export function Checkout() {
         <CoffeeToBuyContainer>
           <h3>Cafés selecionados</h3>
 
-          <CoffeeToBuyContent>
-            {shoppingCart
-              .map((coffee) => {
-                return (
-                  <CoffeeSimpleCard
-                    key={coffee.id}
-                    id={coffee.id}
-                    title={coffee.title}
-                    image={coffee.image}
-                    amount={coffee.amount}
-                    price={coffee.price}
-                  />
-                )
-              })
-              .sort((item1, item2) => Number(item1.key) - Number(item2.key))}
+          {shoppingCart.length > 0 ? (
+            <CoffeeToBuyContent>
+              {shoppingCart
+                .map((coffee) => {
+                  return (
+                    <CoffeeSimpleCard
+                      key={coffee.id}
+                      id={coffee.id}
+                      title={coffee.title}
+                      image={coffee.image}
+                      amount={coffee.amount}
+                      price={coffee.price}
+                    />
+                  )
+                })
+                .sort((item1, item2) => Number(item1.key) - Number(item2.key))}
 
-            <PurchaseData>
-              <div>
-                <span>Total de itens</span>
-                <span>{coinFormat(subTotal)}</span>
-              </div>
+              <PurchaseData>
+                <div>
+                  <span>Total de itens</span>
+                  <span>{coinFormat(subTotal)}</span>
+                </div>
 
-              <div>
-                <span>Entrega</span>
-                <span>R$ 3,50</span>
-              </div>
+                <div>
+                  <span>Entrega</span>
+                  <span>R$ 3,50</span>
+                </div>
 
-              <div>
-                <strong>Total</strong>
-                <strong>{coinFormat(subTotal + 3.5)}</strong>
-              </div>
-            </PurchaseData>
+                <div>
+                  <strong>Total</strong>
+                  <strong>{coinFormat(subTotal + 3.5)}</strong>
+                </div>
+              </PurchaseData>
 
-            <ConfirmOrderButton>Confirmar Pedido</ConfirmOrderButton>
-          </CoffeeToBuyContent>
+              <ConfirmOrderButton>Confirmar Pedido</ConfirmOrderButton>
+            </CoffeeToBuyContent>
+          ) : (
+            <strong>Você não tem itens no carrinho</strong>
+          )}
         </CoffeeToBuyContainer>
       </Content>
     </Container>

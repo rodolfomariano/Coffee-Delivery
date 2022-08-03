@@ -6,15 +6,43 @@ import {
   CardList,
   Container,
   Content,
+  DropContainer,
 } from './styles'
 
+import { useDrop } from 'react-dnd'
+
 import CoffeeBanner from '../../assets/coffee-banner.svg'
-import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
+import {
+  Coffee,
+  Package,
+  ShoppingCart,
+  ShoppingCartSimple,
+  Timer,
+} from 'phosphor-react'
 
 import { coffeeList } from '../../utils/coffeeList'
 import { CoffeeCard } from '../../components/CoffeeCard'
+import { useShoppingCart } from '../../hooks/useShoppingCart'
 
 export function Home() {
+  const {
+    getItemDroppedAndAddInCart,
+    cardIsInDragging,
+    dropContainerIsHover,
+    setDropContainerIsHover,
+  } = useShoppingCart()
+
+  const [, dropRef] = useDrop({
+    accept: 'CARD',
+    hover(item, monitor) {
+      setDropContainerIsHover(true)
+    },
+    drop(item: any, monitor) {
+      getItemDroppedAndAddInCart(item.id)
+      setDropContainerIsHover(false)
+    },
+  })
+
   return (
     <Container>
       <Banner>
@@ -79,6 +107,20 @@ export function Home() {
           })}
         </CardList>
       </Content>
+
+      <DropContainer
+        ref={dropRef}
+        className={
+          cardIsInDragging
+            ? `visible ${dropContainerIsHover && 'isHover'}`
+            : 'hidden'
+        }
+      >
+        <div>
+          <ShoppingCartSimple size={32} />
+          <strong>Solte aqui para adicionar ao carrinho</strong>
+        </div>
+      </DropContainer>
     </Container>
   )
 }

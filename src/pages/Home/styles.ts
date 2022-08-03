@@ -146,3 +146,78 @@ export const CardList = styled.div`
     justify-content: center;
   }
 `
+
+export const DropContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  width: 100%;
+  height: 100px;
+  background-color: ${({ theme }) => theme['base-dropContainer']};
+  padding: 16px;
+  backdrop-filter: blur(1.5px);
+  transition: 300ms;
+
+  &.hidden {
+    top: -100px;
+  }
+
+  &.visible {
+    top: 0;
+
+    &::after,
+    &::before {
+      content: '';
+      left: 0;
+      top: 0;
+      z-index: -1;
+      position: absolute;
+      /* height: 0; */
+      height: 100px;
+
+      background-color: #804ff888;
+      width: 100%;
+      opacity: 0.1;
+    }
+
+    &::before {
+      animation: pulse 1s ease-out infinite;
+    }
+
+    &::after {
+      animation: pulse 2s ease-out infinite;
+    }
+
+    @keyframes pulse {
+      100% {
+        transform: scale(1.5);
+      }
+    }
+  }
+
+  &.isHover {
+    div {
+      border: 2px dashed white;
+    }
+  }
+
+  div {
+    width: 100%;
+    height: 100%;
+    border: 2px dashed rgba(174, 146, 153, 0.6);
+    /* border-radius: 8px; */
+    border-radius: 8px;
+    color: ${({ theme }) => theme['primary-dark']};
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    strong {
+      font-weight: 400;
+      font-size: 0.875rem;
+    }
+  }
+`
