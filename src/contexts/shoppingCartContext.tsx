@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useReducer, useState } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react'
 import { ActionTypes } from '../reducers/shoppingCart/actions'
 import { shoppingCartReducer } from '../reducers/shoppingCart/reducer'
 
@@ -34,7 +40,17 @@ export const ShoppingCartContext = createContext({} as ShoppingCartContextProps)
 export function ShoppingCartContextProvider({
   children,
 }: ShoppingCartContextProviderProps) {
-  const [shoppingCart, dispatch] = useReducer(shoppingCartReducer, [])
+  const [shoppingCart, dispatch] = useReducer(shoppingCartReducer, [], () => {
+    const storedStateAsJSON = localStorage.getItem(
+      '@coffee-delivery:shopping-cart-v1.0.0',
+    )
+
+    if (storedStateAsJSON) {
+      return JSON.parse(storedStateAsJSON)
+    }
+
+    return []
+  })
 
   const [subTotal, setSubTotal] = useState(0)
 
@@ -122,6 +138,12 @@ export function ShoppingCartContextProvider({
       id,
     })
   }
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(shoppingCart)
+
+    localStorage.setItem('@coffee-delivery:shopping-cart-v1.0.0', stateJSON)
+  }, [shoppingCart])
 
   return (
     <ShoppingCartContext.Provider

@@ -15,75 +15,42 @@ export function shoppingCartReducer(state: Coffee[], action: any) {
       return [...state, action.payload.newCoffee]
 
     case ActionTypes.ADD_ITEM_IF_ALREADY_EXISTS_THIS_IN_CART: {
-      const item = state.filter(
-        (item: Coffee) => item.title === action.data.title,
-      )
+      return state.map((item: Coffee) => {
+        if (item.title === action.data.title) {
+          return {
+            ...item,
+            amount: item.amount + action.data.amount,
+          }
+        }
 
-      const shoppingCartWithoutTheItem = state.filter(
-        (item: Coffee) => item.title !== action.data.title,
-      )
-
-      if (item[0]) {
-        return [
-          ...shoppingCartWithoutTheItem,
-          {
-            id: action.data.id,
-            title: action.data.title,
-            image: action.data.image,
-            price: action.data.price,
-            amount: item[0].amount + action.data.amount,
-          },
-        ]
-      }
-      break
+        return item
+      })
     }
 
     case ActionTypes.ADD_ONE_AMOUNT_OF_ITEM: {
-      const item = state.filter(
-        (item: Coffee) => item.title === action.data.title,
-      )
+      return state.map((item: Coffee) => {
+        if (item.title === action.data.title) {
+          return {
+            ...item,
+            amount: item.amount + 1,
+          }
+        }
 
-      const shoppingCartWithoutTheItem = state.filter(
-        (item: Coffee) => item.title !== action.data.title,
-      )
-
-      if (item[0]) {
-        return [
-          ...shoppingCartWithoutTheItem,
-          {
-            id: action.data.id,
-            title: action.data.title,
-            image: action.data.image,
-            price: action.data.price,
-            amount: item[0].amount + 1,
-          },
-        ]
-      }
-      break
+        return item
+      })
     }
 
     case ActionTypes.REMOVE_ONE_AMOUNT_OF_ITEM: {
-      const item = state.filter(
-        (item: Coffee) => item.title === action.data.title,
-      )
+      return state.map((item: Coffee) => {
+        if (item.title === action.data.title) {
+          return {
+            ...item,
+            amount: item.amount - 1,
+          }
+        }
 
-      const shoppingCartWithoutTheItem = state.filter(
-        (item: Coffee) => item.title !== action.data.title,
-      )
-
-      if (item[0]) {
-        return [
-          ...shoppingCartWithoutTheItem,
-          {
-            id: action.data.id,
-            title: action.data.title,
-            image: action.data.image,
-            price: action.data.price,
-            amount: item[0].amount - 1,
-          },
-        ]
-      }
-      break
+        return item
+      })
     }
 
     case ActionTypes.REMOVE_ITEM_OF_CART: {
@@ -93,32 +60,30 @@ export function shoppingCartReducer(state: Coffee[], action: any) {
 
       return [...shoppingCartWithoutTheItem]
     }
+
     case ActionTypes.ADD_ITEM_ON_DROP: {
       const coffeeData = coffeeList.filter((item) => item.id === action.id)
       const coffeeToAdd = coffeeData[0]
 
-      const item = state.filter(
+      const itemFounded = state.filter(
         (item: Coffee) => item.title === coffeeToAdd.title,
       )
-      const shoppingCartWithoutTheItem = state.filter(
-        (item: Coffee) => item.title !== coffeeToAdd.title,
-      )
 
-      if (item[0]) {
-        return [
-          ...shoppingCartWithoutTheItem,
-          {
-            id: coffeeToAdd.id,
-            title: coffeeToAdd.title,
-            image: coffeeToAdd.coffeeImage,
-            price: coffeeToAdd.price,
-            amount: item[0].amount + 1,
-          },
-        ]
+      if (itemFounded[0]) {
+        return state.map((item: Coffee) => {
+          if (item.title === coffeeToAdd.title) {
+            return {
+              ...item,
+              amount: item.amount + 1,
+            }
+          }
+
+          return item
+        })
       }
 
       return [
-        ...shoppingCartWithoutTheItem,
+        ...state,
         {
           id: coffeeToAdd.id,
           title: coffeeToAdd.title,
@@ -128,9 +93,8 @@ export function shoppingCartReducer(state: Coffee[], action: any) {
         },
       ]
     }
+
     default:
       return state
   }
-
-  return state
 }
