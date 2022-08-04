@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 // import { ToastContainer } from 'react-toastify'
-// import 'react-toastify/dist/ReactToastify.css'
+// import 'react-toastify/dist/ReactToastify.min.css'
 
 import { GlobalStyles } from './styles/global'
 import { darkTheme, defaultTheme } from './styles/themes/default'

@@ -1,5 +1,6 @@
-import { createContext, ReactNode, useState } from 'react'
-import { coffeeList } from '../utils/coffeeList'
+import { createContext, ReactNode, useReducer, useState } from 'react'
+import { ActionTypes } from '../reducers/shoppingCart/actions'
+import { shoppingCartReducer } from '../reducers/shoppingCart/reducer'
 
 interface Coffee {
   id: string
@@ -14,7 +15,6 @@ interface ShoppingCartContextProps {
   subTotal: number
   cardIsInDragging: boolean
   dropContainerIsHover: boolean
-  setShoppingCart: (data: Coffee[]) => void
   addItemInShoppingCart: (data: Coffee) => void
   removeOneItemInShoppingCart: (data: Coffee) => void
   addOneItemInShoppingCart: (data: Coffee) => void
@@ -34,7 +34,8 @@ export const ShoppingCartContext = createContext({} as ShoppingCartContextProps)
 export function ShoppingCartContextProvider({
   children,
 }: ShoppingCartContextProviderProps) {
-  const [shoppingCart, setShoppingCart] = useState<Coffee[]>([])
+  const [shoppingCart, dispatch] = useReducer(shoppingCartReducer, [])
+
   const [subTotal, setSubTotal] = useState(0)
 
   const [cardIsInDragging, setCardIsInDragging] = useState(false)
@@ -45,33 +46,27 @@ export function ShoppingCartContextProvider({
       (item: Coffee) => item.title === data.title,
     )
 
-    const shoppingCartWithoutTheItem = shoppingCart.filter(
-      (item: Coffee) => item.title !== data.title,
-    )
-
     if (item[0]) {
-      return setShoppingCart([
-        ...shoppingCartWithoutTheItem,
-        {
-          id: data.id,
-          title: data.title,
-          image: data.image,
-          price: data.price,
-          amount: item[0].amount + data.amount,
-        },
-      ])
+      return dispatch({
+        type: ActionTypes.ADD_ITEM_IF_ALREADY_EXISTS_THIS_IN_CART,
+        data,
+      })
     }
 
-    return setShoppingCart([
-      ...shoppingCart,
-      {
-        id: data.id,
-        title: data.title,
-        image: data.image,
-        price: data.price,
-        amount: data.amount,
+    const newCoffee = {
+      id: data.id,
+      title: data.title,
+      image: data.image,
+      price: data.price,
+      amount: data.amount,
+    }
+
+    dispatch({
+      type: ActionTypes.ADD_NEW_ITEM_IN_CART,
+      payload: {
+        newCoffee,
       },
-    ])
+    })
   }
 
   function removeOneItemInShoppingCart(data: Coffee) {
@@ -82,20 +77,12 @@ export function ShoppingCartContextProvider({
     const item = shoppingCart.filter(
       (item: Coffee) => item.title === data.title,
     )
-    const shoppingCartWithoutTheItem = shoppingCart.filter(
-      (item: Coffee) => item.title !== data.title,
-    )
+
     if (item[0]) {
-      return setShoppingCart([
-        ...shoppingCartWithoutTheItem,
-        {
-          id: data.id,
-          title: data.title,
-          image: data.image,
-          price: data.price,
-          amount: item[0].amount - 1,
-        },
-      ])
+      dispatch({
+        type: ActionTypes.REMOVE_ONE_AMOUNT_OF_ITEM,
+        data,
+      })
     }
   }
 
@@ -103,28 +90,20 @@ export function ShoppingCartContextProvider({
     const item = shoppingCart.filter(
       (item: Coffee) => item.title === data.title,
     )
-    const shoppingCartWithoutTheItem = shoppingCart.filter(
-      (item: Coffee) => item.title !== data.title,
-    )
+
     if (item[0]) {
-      return setShoppingCart([
-        ...shoppingCartWithoutTheItem,
-        {
-          id: data.id,
-          title: data.title,
-          image: data.image,
-          price: data.price,
-          amount: item[0].amount + 1,
-        },
-      ])
+      dispatch({
+        type: ActionTypes.ADD_ONE_AMOUNT_OF_ITEM,
+        data,
+      })
     }
   }
 
   function removeItemFromShoppingCart(title: string) {
-    const shoppingCartWithoutTheItem = shoppingCart.filter(
-      (item: Coffee) => item.title !== title,
-    )
-    setShoppingCart([...shoppingCartWithoutTheItem])
+    dispatch({
+      type: ActionTypes.REMOVE_ITEM_OF_CART,
+      title,
+    })
   }
 
   function subTotalCalc() {
@@ -138,39 +117,10 @@ export function ShoppingCartContextProvider({
   }
 
   function getItemDroppedAndAddInCart(id: string) {
-    const coffeeData = coffeeList.filter((item) => item.id === id)
-    const coffeeToAdd = coffeeData[0]
-
-    const item = shoppingCart.filter(
-      (item: Coffee) => item.title === coffeeToAdd.title,
-    )
-    const shoppingCartWithoutTheItem = shoppingCart.filter(
-      (item: Coffee) => item.title !== coffeeToAdd.title,
-    )
-
-    if (item[0]) {
-      return setShoppingCart([
-        ...shoppingCartWithoutTheItem,
-        {
-          id: coffeeToAdd.id,
-          title: coffeeToAdd.title,
-          image: coffeeToAdd.coffeeImage,
-          price: coffeeToAdd.price,
-          amount: item[0].amount + 1,
-        },
-      ])
-    }
-
-    return setShoppingCart([
-      ...shoppingCartWithoutTheItem,
-      {
-        id: coffeeToAdd.id,
-        title: coffeeToAdd.title,
-        image: coffeeToAdd.coffeeImage,
-        price: coffeeToAdd.price,
-        amount: coffeeToAdd.amountInTheCart + 1,
-      },
-    ])
+    dispatch({
+      type: ActionTypes.ADD_ITEM_ON_DROP,
+      id,
+    })
   }
 
   return (
@@ -180,7 +130,6 @@ export function ShoppingCartContextProvider({
         subTotal,
         cardIsInDragging,
         dropContainerIsHover,
-        setShoppingCart,
         addItemInShoppingCart,
         removeOneItemInShoppingCart,
         addOneItemInShoppingCart,
