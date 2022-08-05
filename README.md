@@ -22,7 +22,7 @@
 Exemple of the ecomerce with drag and drop
 
 <p>
-  Demo of the project: <a href="https://expo.dev/@rodolfomariano/myfinances" target="_blank">Visit!</a>
+  Demo of the project: <a href="https://coffee-delivery-coral.vercel.app/" target="_blank">Visit!</a>
 </p>
 
 ## :rocket: Getting Started
