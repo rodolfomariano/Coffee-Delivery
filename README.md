@@ -19,7 +19,7 @@
 
 ## :computer: Project
 
-Exemple of the ecomerce with drag and drop
+Exemple of the e-comerce with drag and drop
 
 <p>
   Demo of the project: <a href="https://coffee-delivery-coral.vercel.app/" target="_blank">Visit!</a>
