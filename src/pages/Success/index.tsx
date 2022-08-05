@@ -1,4 +1,4 @@
-import { CaretLeft, CurrencyDollar, MapPin, Timer } from 'phosphor-react'
+import { CurrencyDollar, HouseSimple, MapPin, Timer } from 'phosphor-react'
 import {
   Container,
   Details,
@@ -28,7 +28,7 @@ export function Success(props: any) {
   return (
     <Container>
       <NavLink to="/">
-        <CaretLeft />
+        <HouseSimple />
         Home
       </NavLink>
 
