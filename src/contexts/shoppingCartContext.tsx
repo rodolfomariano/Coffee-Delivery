@@ -116,10 +116,14 @@ export function ShoppingCartContextProvider({
   }
 
   function removeItemFromShoppingCart(title: string) {
-    dispatch({
-      type: ActionTypes.REMOVE_ITEM_OF_CART,
-      title,
-    })
+    const confirmationToRemove = confirm('Quer mesmo remover o item?')
+
+    if (confirmationToRemove === true) {
+      dispatch({
+        type: ActionTypes.REMOVE_ITEM_OF_CART,
+        title,
+      })
+    }
   }
 
   function subTotalCalc() {

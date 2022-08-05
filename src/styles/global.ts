@@ -24,12 +24,15 @@ export const GlobalStyles = createGlobalStyle`
     box-shadow: 0 0 0 1px ${({ theme }) => theme['secondary-dark']};
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background: ${({ theme }) => theme.background};
     color: ${({ theme }) => theme['base-text']};
     -webkit-font-smoothing: antialiased;
     font-family: 'Roboto', sans-serif;
-    
   }
 
   body, input, textarea, button {

@@ -45,7 +45,9 @@ export function CoffeeSimpleCard({
   function handleRemoveOneItemInShoppingCart(data: Coffee) {
     removeOneItemInShoppingCart(data)
 
-    setAmountOfCoffee(amount - 1)
+    if (amountOfCoffee !== 1) {
+      setAmountOfCoffee(amount - 1)
+    }
   }
 
   function handleAddItemInShoppingCart(data: Coffee) {

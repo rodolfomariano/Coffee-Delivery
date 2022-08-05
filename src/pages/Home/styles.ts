@@ -138,6 +138,7 @@ export const Content = styled.main`
 export const CardList = styled.div`
   margin-top: 54px;
   margin-bottom: 54px;
+
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
@@ -206,7 +207,6 @@ export const DropContainer = styled.div`
     width: 100%;
     height: 100%;
     border: 2px dashed rgba(174, 146, 153, 0.6);
-    /* border-radius: 8px; */
     border-radius: 8px;
     color: ${({ theme }) => theme['primary-dark']};
 
@@ -219,5 +219,72 @@ export const DropContainer = styled.div`
       font-weight: 400;
       font-size: 0.875rem;
     }
+  }
+`
+
+export const FloatActionsContainer = styled.div`
+  position: fixed;
+  bottom: 50px;
+  right: 30px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  a {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    text-decoration: none;
+    background-color: ${({ theme }) => theme['secondary-light']};
+    padding: 8px;
+    border-radius: 10px;
+    transition: 300ms;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      filter: brightness(0.9);
+    }
+
+    span {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 20px;
+      height: 20px;
+      background-color: ${({ theme }) => theme['secondary-dark']};
+      border-radius: 50%;
+      font-size: 0.75rem;
+      color: ${({ theme }) => theme.white};
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 720px) {
+    right: 10px;
+  }
+`
+
+export const SendToTopButton = styled.button`
+  width: 50px;
+  height: 50px;
+  background-color: ${({ theme }) => theme['primary-dark']};
+  color: ${({ theme }) => theme.background};
+  border: none;
+  border-radius: 10px;
+  transition: filter 300ms;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    filter: brightness(0.9);
   }
 `

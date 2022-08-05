@@ -31,7 +31,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ThemeContextProvider>
       <ShoppingCartContextProvider>
-        <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+        {/* <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}> */}
+        <DndProvider backend={HTML5Backend}>
           <App />
         </DndProvider>
       </ShoppingCartContextProvider>

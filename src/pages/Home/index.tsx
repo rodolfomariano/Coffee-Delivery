@@ -7,12 +7,15 @@ import {
   Container,
   Content,
   DropContainer,
+  FloatActionsContainer,
+  SendToTopButton,
 } from './styles'
 
 import { useDrop } from 'react-dnd'
 
 import CoffeeBanner from '../../assets/coffee-banner.svg'
 import {
+  CaretUp,
   Coffee,
   Package,
   ShoppingCart,
@@ -23,14 +26,27 @@ import {
 import { coffeeList } from '../../utils/coffeeList'
 import { CoffeeCard } from '../../components/CoffeeCard'
 import { useShoppingCart } from '../../hooks/useShoppingCart'
+import { toast } from 'react-toastify'
+import { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
+
+interface DorItemProps {
+  id: string
+}
 
 export function Home() {
+  const [hiddenButton, setHiddenButton] = useState(true)
+
+  const { shoppingCart } = useShoppingCart()
+
   const {
     getItemDroppedAndAddInCart,
     cardIsInDragging,
     dropContainerIsHover,
     setDropContainerIsHover,
   } = useShoppingCart()
+
+  const successMessage = () => toast.success('Café adicionado com sucesso!')
 
   const [, dropRef] = useDrop({
     accept: 'CARD',
@@ -40,11 +56,25 @@ export function Home() {
     drop(item: any, monitor) {
       getItemDroppedAndAddInCart(item.id)
       setDropContainerIsHover(false)
+      successMessage()
     },
   })
 
+  function sedToTop() {
+    window.scrollTo(0, 0)
+  }
+  document.addEventListener('scroll', hiddenSendToTopButton)
+
+  function hiddenSendToTopButton() {
+    if (window.scrollY > 400) {
+      setHiddenButton(false)
+    } else {
+      setHiddenButton(true)
+    }
+  }
+
   return (
-    <Container>
+    <Container onScroll={hiddenSendToTopButton}>
       <Banner>
         <BannerContent>
           <div>
@@ -106,6 +136,19 @@ export function Home() {
             )
           })}
         </CardList>
+
+        {!hiddenButton && (
+          <FloatActionsContainer>
+            <NavLink to="/checkout">
+              <ShoppingCart weight="fill" color="#C47F17" size={28} />
+              {shoppingCart.length > 0 && <span>{shoppingCart.length}</span>}
+            </NavLink>
+
+            <SendToTopButton onClick={sedToTop}>
+              <CaretUp size={32} />
+            </SendToTopButton>
+          </FloatActionsContainer>
+        )}
       </Content>
 
       <DropContainer

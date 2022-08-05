@@ -7,6 +7,7 @@ import {
   CaretLeft,
   CreditCard,
   CurrencyDollar,
+  HouseSimple,
   MapPinLine,
   Money,
 } from 'phosphor-react'
@@ -116,7 +117,7 @@ export function Checkout() {
   return (
     <Container>
       <NavLink to="/">
-        <CaretLeft />
+        <HouseSimple />
         Home
       </NavLink>
       <Content>

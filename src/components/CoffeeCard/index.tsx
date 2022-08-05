@@ -1,6 +1,7 @@
 import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
 import { useState } from 'react'
 import { useDrag } from 'react-dnd'
+import { toast } from 'react-toastify'
 
 import { useShoppingCart } from '../../hooks/useShoppingCart'
 
@@ -68,6 +69,8 @@ export function CoffeeCard({
     [],
   )
 
+  const successMessage = () => toast.success('Café adicionado com sucesso!')
+
   function handleAddAmountOfCoffee() {
     setAmountOfCoffee(amountOfCoffee + 1)
   }
@@ -80,6 +83,7 @@ export function CoffeeCard({
     addItemInShoppingCart(data)
 
     setAmountOfCoffee(1)
+    successMessage()
   }
 
   return (
