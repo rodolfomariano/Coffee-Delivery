@@ -9,9 +9,22 @@ import {
 } from './styles'
 
 import Illustration from '../../assets/illustration.svg'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 
-export function Success() {
+interface DataProps {
+  street: string
+  houseNumber: number
+  district: string
+  city: string
+  state: string
+  formsToPay: string
+}
+
+export function Success(props: any) {
+  const { data } = useParams<string | any>()
+
+  const userData: DataProps = JSON.parse(data as string)
+
   return (
     <Container>
       <NavLink to="/">
@@ -31,9 +44,10 @@ export function Success() {
 
             <Details>
               <p>
-                Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+                Entrega em{' '}
+                <strong>{`${userData.street}, ${userData.houseNumber}`}</strong>
                 <br />
-                Farrapos - Porto Alegre, RS
+                {`${userData.district} - ${userData.city}, ${userData.state}`}
               </p>
             </Details>
           </DetailsContainer>
@@ -59,9 +73,15 @@ export function Success() {
 
             <Details>
               <p>
-                Pagamento da entrega
+                Forma de pagamento
                 <br />
-                <strong>Cartão de Crédito</strong>
+                <strong>
+                  {userData.formsToPay === 'money'
+                    ? 'Dinheiro'
+                    : userData.formsToPay === 'credit-card'
+                    ? 'Cartão de Crédito'
+                    : 'Cartão de Débito'}
+                </strong>
               </p>
             </Details>
           </DetailsContainer>

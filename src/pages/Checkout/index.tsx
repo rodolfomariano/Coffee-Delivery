@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import ClipLoader from 'react-spinners/ClipLoader'
 
 import {
@@ -61,7 +61,18 @@ export function Checkout() {
   const CepFormatted = formatCEP(cep)
   const removeTheFormate = cep.replace('-', '')
 
-  const { shoppingCart, subTotalCalc, subTotal } = useShoppingCart()
+  const { shoppingCart, subTotalCalc, subTotal, clearCart } = useShoppingCart()
+
+  const navigate = useNavigate()
+
+  const userAddressAndFormsOfPay = {
+    street,
+    houseNumber,
+    district,
+    city,
+    state,
+    formsToPay,
+  }
 
   function resetForm() {
     setStreet('')
@@ -111,6 +122,19 @@ export function Checkout() {
         console.log('error')
         return setGetAddressError('Erro na busca do endereço')
       }
+    }
+  }
+
+  function finalizePurchase() {
+    if (street) {
+      navigate(`/success/${JSON.stringify(userAddressAndFormsOfPay)}`)
+      clearCart()
+    } else if (cep.length < 9) {
+      alert('CEP inválido')
+    } else if (!houseNumber) {
+      alert('Informe o número')
+    } else {
+      alert('Informe um Endereço válido')
     }
   }
 
@@ -279,7 +303,9 @@ export function Checkout() {
                 </div>
               </PurchaseData>
 
-              <ConfirmOrderButton>Confirmar Pedido</ConfirmOrderButton>
+              <ConfirmOrderButton onClick={finalizePurchase}>
+                Confirmar Pedido
+              </ConfirmOrderButton>
             </CoffeeToBuyContent>
           ) : (
             <strong>Você não tem itens no carrinho</strong>

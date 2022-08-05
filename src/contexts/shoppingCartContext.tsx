@@ -29,6 +29,7 @@ interface ShoppingCartContextProps {
   getItemDroppedAndAddInCart: (id: string) => void
   setCardIsInDragging: (status: boolean) => void
   setDropContainerIsHover: (status: boolean) => void
+  clearCart: () => void
 }
 
 interface ShoppingCartContextProviderProps {
@@ -143,6 +144,12 @@ export function ShoppingCartContextProvider({
     })
   }
 
+  function clearCart() {
+    dispatch({
+      type: ActionTypes.CLEAR_CART,
+    })
+  }
+
   useEffect(() => {
     const stateJSON = JSON.stringify(shoppingCart)
 
@@ -164,6 +171,7 @@ export function ShoppingCartContextProvider({
         getItemDroppedAndAddInCart,
         setCardIsInDragging,
         setDropContainerIsHover,
+        clearCart,
       }}
     >
       {children}

@@ -94,6 +94,10 @@ export function shoppingCartReducer(state: Coffee[], action: any) {
       ]
     }
 
+    case ActionTypes.CLEAR_CART: {
+      return []
+    }
+
     default:
       return state
   }
