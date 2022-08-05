@@ -148,11 +148,15 @@ export const PaymentMethodsButton = styled.button`
   padding: 16px;
   gap: 12px;
 
+  &.activity {
+    background-color: ${({ theme }) => theme['primary-light']};
+  }
+
   svg {
     color: ${({ theme }) => theme['primary-dark']};
   }
 
-  &:hover {
+  &:not(.activity):hover {
     background-color: ${({ theme }) => theme['base-hover']};
   }
 

@@ -54,6 +54,10 @@ export function Checkout() {
   const [loading, setLoading] = useState(false)
   const [getAddressError, setGetAddressError] = useState('')
 
+  const [formsToPay, setFormsToPay] = useState<
+    'credit-card' | 'debit-card' | 'money'
+  >('credit-card')
+
   const CepFormatted = formatCEP(cep)
   const removeTheFormate = cep.replace('-', '')
 
@@ -211,17 +215,26 @@ export function Checkout() {
             </header>
 
             <div>
-              <PaymentMethodsButton>
+              <PaymentMethodsButton
+                className={formsToPay === 'credit-card' ? 'activity' : ''}
+                onClick={() => setFormsToPay('credit-card')}
+              >
                 <CreditCard size={16} />
                 Cartão de crédito
               </PaymentMethodsButton>
 
-              <PaymentMethodsButton>
+              <PaymentMethodsButton
+                className={formsToPay === 'debit-card' ? 'activity' : ''}
+                onClick={() => setFormsToPay('debit-card')}
+              >
                 <Bank size={16} />
                 Cartão de débito
               </PaymentMethodsButton>
 
-              <PaymentMethodsButton>
+              <PaymentMethodsButton
+                className={formsToPay === 'money' ? 'activity' : ''}
+                onClick={() => setFormsToPay('money')}
+              >
                 <Money size={16} />
                 dinheiro
               </PaymentMethodsButton>
