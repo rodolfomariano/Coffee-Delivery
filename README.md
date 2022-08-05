@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img width="80%" src="https://firebasestorage.googleapis.com/v0/b/imagens-3dce0.appspot.com/o/coffee-delivery.gif?alt=media&token=66820067-4a91-4825-aaaa-052aeb7f0c95">
+  <img width="80%" src="https://firebasestorage.googleapis.com/v0/b/imagens-3dce0.appspot.com/o/coffee-delivery-min.gif?alt=media&token=bec2c3d4-4fc8-4e31-82d2-fe3197c6676a">
 </p>
 
 ## :satellite: Technologies
