@@ -7,6 +7,7 @@ export const Container = styled.div`
   border-radius: 6px 36px 6px 36px;
   background-color: ${({ theme }) => theme['base-card']};
   padding: 0 20px 20px 20px;
+  cursor: grab;
 
   display: flex;
   flex-direction: column;
